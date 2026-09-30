@@ -7,6 +7,130 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+
+        <Grid Grid.Column="0" Grid.Row="0">
+            <TextBlock
+                Text="Méret"
+                FontSize="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="OCR A Std"
+                Margin="5,5,5,5"
+                
+                />
+        </Grid>
+
+
+        <Grid Grid.Column="0" Grid.Row="2">
+
+            <TextBlock
+                Text="Kérem válassza ki, mekkora pályát szeretne teljesíteni"
+                FontFamily="OCR A Std"
+                
+                >
+
+            </TextBlock>
+
+            <ListBox
+                x:Name="lb_meretek"
+                Margin="5,161,5,0" Height="110" VerticalAlignment="Top"
+                >
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">4x4</ListBoxItem>
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">5x5</ListBoxItem>
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">6x6</ListBoxItem>
+            </ListBox>
+        </Grid>
+
+
+
+
+        <Grid Grid.Column="3" Grid.Row="0">
+            <TextBlock
+                Text="Téma"
+                FontSize="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="OCR A Std"
+                Margin="5,5,5,5"
+                >
+
+            </TextBlock>
+
+        </Grid>
+
+
+        <Grid Grid.Row="2" Grid.Column="3">
+            <TextBlock
+                Text="Kérem válassza ki a játék témáját!"
+                FontFamily="OCR A Std"
+                
+                >
+
+            </TextBlock>
+
+            <ListBox 
+                x:Name="lb_temak"
+                Margin="5,161,5,0" Height="110" VerticalAlignment="Top"
+                >
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">Emoji</ListBoxItem>
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">Számok</ListBoxItem>
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">asd</ListBoxItem>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <TextBlock
+                Text="Memóriajáték"
+                FontSize="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="OCR A Std"
+                Margin="5,5,5,5"
+                >
+            </TextBlock>
+           
+
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Button
+                x:Name="btn_mehet"
+                Content="MEHET A JÁTÉK!" 
+                Margin="0,299,0,0"
+                FontSize="20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontFamily="OCR A Std" Width="448" Height="34"
+                >
+
+            </Button>
+        </Grid>
+
+        <Grid Grid.Column="2" Grid.Row="1">
+            <Button
+                x:Name="btn_bezárás"
+                Content="❌"
+                FontSize="10"
+                Foreground="Red"
+                >
+                
+            </Button>
+            
+        </Grid>
 
     </Grid>
 </Window>

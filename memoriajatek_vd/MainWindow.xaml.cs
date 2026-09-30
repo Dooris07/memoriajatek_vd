@@ -19,6 +19,7 @@ namespace memoriajatek_vd
         public MainWindow()
         {
             InitializeComponent();
+
         }
     }
 }
