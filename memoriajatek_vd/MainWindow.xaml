@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:memoriajatek_vd"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="480" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -38,7 +38,10 @@
         <Grid Grid.Column="0" Grid.Row="2">
 
             <TextBlock
-                Text="Kérem válassza ki, mekkora pályát szeretne teljesíteni"
+                FontSize="15"
+                Margin="5,5,5,5"
+                TextWrapping="Wrap"
+                Text="Kérem válassza ki, mekkora pályát szeretne teljesíteni!"
                 FontFamily="OCR A Std"
                 
                 >
@@ -75,6 +78,9 @@
 
         <Grid Grid.Row="2" Grid.Column="3">
             <TextBlock
+                FontSize="15"
+                Margin="5,5,5,5"
+                TextWrapping="Wrap"
                 Text="Kérem válassza ki a játék témáját!"
                 FontFamily="OCR A Std"
                 
@@ -88,7 +94,7 @@
                 >
                 <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">Emoji</ListBoxItem>
                 <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">Számok</ListBoxItem>
-                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">asd</ListBoxItem>
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">Tantárgyak</ListBoxItem>
             </ListBox>
         </Grid>
 
@@ -106,7 +112,8 @@
 
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="2">
+        <Grid Grid.Column="1" Grid.Row="2"
+              x:Name="kozep">
             <Button
                 x:Name="btn_mehet"
                 Content="MEHET A JÁTÉK!" 
@@ -114,7 +121,7 @@
                 FontSize="20"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                FontFamily="OCR A Std" Width="448" Height="34"
+                FontFamily="OCR A Std" Width="448" Height="34" Click="Mehet"
                 >
 
             </Button>
