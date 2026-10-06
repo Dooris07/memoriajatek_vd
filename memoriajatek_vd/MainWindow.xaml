@@ -52,8 +52,8 @@
                 x:Name="lb_meretek"
                 Margin="5,161,5,0" Height="110" VerticalAlignment="Top"
                 >
+                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">2x2</ListBoxItem>
                 <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">4x4</ListBoxItem>
-                <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">5x5</ListBoxItem>
                 <ListBoxItem HorizontalAlignment="Center" FontSize="20" FontFamily="OCR A Std">6x6</ListBoxItem>
             </ListBox>
         </Grid>
@@ -113,7 +113,9 @@
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="2"
-              x:Name="kozep">
+              x:Name="kozep"
+               >
+            
             <Button
                 x:Name="btn_mehet"
                 Content="MEHET A JÁTÉK!" 

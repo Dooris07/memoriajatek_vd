@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xaml.Permissions;
+using System.Windows.Threading;
 
 namespace memoriajatek_vd
 {
@@ -88,6 +90,10 @@ namespace memoriajatek_vd
 
         List<string> kevert = new List<string>();
 
+        int nyomva = 1;
+
+        Button v1Gomb;
+
         public MainWindow()
         {
             InitializeComponent();  
@@ -98,8 +104,8 @@ namespace memoriajatek_vd
         {
             if (lb_meretek.SelectedItem != null && lb_temak.SelectedItem != null)
             {
-                btn_mehet.Visibility = Visibility.Collapsed;
-                switch (lb_temak.SelectedItem.ToString())
+                btn_mehet.Visibility = Visibility.Hidden;
+                switch (((ListBoxItem)lb_temak.SelectedItem).Content.ToString())
                 {
                     case "Emoji":
                         aktual = emojik;
@@ -107,12 +113,12 @@ namespace memoriajatek_vd
                     case "Számok":
                         aktual = szamok;
                         break;
-                    case "tantárgyak":
+                    case "Tantárgyak":
                         aktual = targyak;
                         break;
                 }
 
-                KeveremKavarom();
+                
 
                 Gridvarazslo();
             }
@@ -128,20 +134,20 @@ namespace memoriajatek_vd
         private void Gridvarazslo()
         {
             int kockak = 0;
-            switch (lb_meretek.SelectedItem.ToString())
+            switch (((ListBoxItem)lb_meretek.SelectedItem).Content.ToString())
             {
+                case "2x2":
+                    kockak = 2;
+                    break;
                 case "4x4":
                     kockak = 4;
-                    break;
-                case "5x5":
-                    kockak = 5;
                     break;
                 case "6x6":
                     kockak = 6;
                     break;
             }
-
-            Grid palya  = new Grid();
+            KeveremKavarom(kockak);
+            Grid palya = new Grid();
             for (int i = 0; i < kockak; i++)
             {
                 RowDefinition sor = new RowDefinition();
@@ -149,7 +155,9 @@ namespace memoriajatek_vd
                 palya.RowDefinitions.Add(sor);
                 palya.ColumnDefinitions.Add(oszlop);
             }
-            
+
+
+
             for (int i = 0; i < kockak; i++)
             {
                 for (int j = 0; j < kockak; j++)
@@ -157,29 +165,64 @@ namespace memoriajatek_vd
                     Button gomb = new Button();
                     gomb.HorizontalAlignment = HorizontalAlignment.Stretch;
                     gomb.VerticalAlignment = VerticalAlignment.Stretch;
-                    gomb.Content = kevert[i+j];
+                    gomb.Content = kevert[i * kockak + j];
                     gomb.Foreground = Brushes.Transparent;
-                    gomb.Background = Brushes.Gray;
+                    gomb.Background = Brushes.LightGray;
+                    gomb.Margin = new Thickness(5);
                     Grid.SetRow(gomb, i);
                     Grid.SetColumn(gomb, j);
-                    
+
                     palya.Children.Add(gomb);
+                    gomb.Click += new RoutedEventHandler(this.Gombnyomas);
                 }
             }
-            kozep = palya;
+
+
+            palya.HorizontalAlignment = HorizontalAlignment.Stretch;
+            palya.VerticalAlignment = VerticalAlignment.Stretch;
+
+            kozep.Children.Add(palya);
+
 
 
         }
 
 
+        private void Gombnyomas(object sender, RoutedEventArgs e)
+        {
+            Button gomb = (Button)sender;
+            gomb.Foreground = Brushes.Black;
+            gomb.Refresh();
+            if (nyomva == 2)
+            {
+                string v1 = v1Gomb.Content.ToString();
+                string v2 = gomb.Content.ToString();
+                if (!Ellenorzo(v1, v2))
+                {
+                    Thread.Sleep(1000);
+                    gomb.Foreground = Brushes.Transparent;
+                    v1Gomb.Foreground = Brushes.Transparent;
+                }
+                
+                nyomva = 1;
+            }
+            else
+            {
+                v1Gomb = gomb;
+                nyomva++;
+            }
+        }
 
-        private void KeveremKavarom()
+
+
+
+        private void KeveremKavarom(int kockak)
         {
             List<string> keverendo = new List<string>();
-            foreach (var item in aktual)
+            for (int i = 0; i < kockak*kockak/2; i++)
             {
-                keverendo.Add(item.Kartya1);
-                keverendo.Add(item.Kartya2);
+                keverendo.Add(aktual[i].Kartya1);
+                keverendo.Add(aktual[i].Kartya2);
             }
 
             string[] kavarando = keverendo.ToArray();
@@ -209,7 +252,20 @@ namespace memoriajatek_vd
             return false;
         }
 
+        
 
+
+    }
+
+    public static class ExtensionMethods
+    {
+        private static readonly Action EmptyDelegate = delegate { };
+
+        public static void Refresh(this System.Windows.UIElement uiElement)
+        {
+            // Lefuttatja az összes függőben lévő renderelési prioritású UI műveletet
+            uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+        }
     }
 
 }
