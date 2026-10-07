@@ -134,7 +134,7 @@
                 x:Name="btn_bezárás"
                 Content="❌"
                 FontSize="10"
-                Foreground="Red"
+                Foreground="Red" Click="Iksz"
                 >
                 
             </Button>

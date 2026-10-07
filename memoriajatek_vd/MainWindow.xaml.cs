@@ -19,6 +19,8 @@ namespace memoriajatek_vd
     /// </summary>
     public partial class MainWindow : Window
     {
+        Random rnd = new Random();
+
         List<Parok> szamok = new List<Parok>()
         {
             new Parok("1", "1"),
@@ -90,13 +92,20 @@ namespace memoriajatek_vd
 
         List<string> kevert = new List<string>();
 
-        int nyomva = 1;
+        List<int> segéd = new List<int>() {2, 4, 6, 8, 10, 12, 14, 16};
 
+        int maxIndex;
+
+        int nyomva = 1;
+        int ketto;
+        int negy;
         Button v1Gomb;
 
         public MainWindow()
         {
-            InitializeComponent();  
+            InitializeComponent();
+             ketto = rnd.Next(1, 8);
+             negy = rnd.Next(1, 5);
 
         }
 
@@ -138,14 +147,20 @@ namespace memoriajatek_vd
             {
                 case "2x2":
                     kockak = 2;
+                    maxIndex = segéd[ketto];
                     break;
                 case "4x4":
+                    maxIndex = segéd[negy];
                     kockak = 4;
                     break;
                 case "6x6":
                     kockak = 6;
                     break;
             }
+
+
+
+
             KeveremKavarom(kockak);
             Grid palya = new Grid();
             for (int i = 0; i < kockak; i++)
@@ -166,7 +181,7 @@ namespace memoriajatek_vd
                     gomb.HorizontalAlignment = HorizontalAlignment.Stretch;
                     gomb.VerticalAlignment = VerticalAlignment.Stretch;
                     gomb.Content = kevert[i * kockak + j];
-                    gomb.Foreground = Brushes.Transparent;
+                   // gomb.Foreground = Brushes.Transparent;
                     gomb.Background = Brushes.LightGray;
                     gomb.Margin = new Thickness(5);
                     Grid.SetRow(gomb, i);
@@ -188,6 +203,7 @@ namespace memoriajatek_vd
         }
 
 
+
         private void Gombnyomas(object sender, RoutedEventArgs e)
         {
             Button gomb = (Button)sender;
@@ -200,8 +216,8 @@ namespace memoriajatek_vd
                 if (!Ellenorzo(v1, v2))
                 {
                     Thread.Sleep(1000);
-                    gomb.Foreground = Brushes.Transparent;
-                    v1Gomb.Foreground = Brushes.Transparent;
+                    //gomb.Foreground = Brushes.Transparent;
+                    //v1Gomb.Foreground = Brushes.Transparent;
                 }
                 
                 nyomva = 1;
@@ -219,16 +235,18 @@ namespace memoriajatek_vd
         private void KeveremKavarom(int kockak)
         {
             List<string> keverendo = new List<string>();
-            for (int i = 0; i < kockak*kockak/2; i++)
+            for (int i = 0; i < kockak * kockak / 2; i++)
             {
-                keverendo.Add(aktual[i].Kartya1);
-                keverendo.Add(aktual[i].Kartya2);
+                keverendo.Add(aktual[i - 1 + maxIndex].Kartya1);
+                keverendo.Add(aktual[i - 1 + maxIndex].Kartya2);
             }
 
             string[] kavarando = keverendo.ToArray();
             Random.Shared.Shuffle(kavarando);
             kevert = kavarando.ToList();
         }
+
+
 
         private bool Ellenorzo(string v1, string v2)
         {
@@ -252,9 +270,10 @@ namespace memoriajatek_vd
             return false;
         }
 
-        
-
-
+        private void Iksz(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 
     public static class ExtensionMethods
