@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace memoriajatek_vd
+﻿namespace memoriajatek_vd
 {
     internal class Parok
     {
@@ -29,7 +23,6 @@ namespace memoriajatek_vd
 
 
 
-        
 
 
 
@@ -38,7 +31,8 @@ namespace memoriajatek_vd
 
 
 
-        public string Kartya1 { get => kartya1;}
-        public string Kartya2 { get => kartya2;}
+
+        public string Kartya1 { get => kartya1; }
+        public string Kartya2 { get => kartya2; }
     }
 }

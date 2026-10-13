@@ -6,6 +6,26 @@
         xmlns:local="clr-namespace:memoriajatek_vd"
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="800">
+    <Window.Resources>
+        <Style x:Key="SajatGomb" TargetType="Button">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -60,7 +80,6 @@
 
 
 
-
         <Grid Grid.Column="3" Grid.Row="0">
             <TextBlock
                 Text="Téma"
@@ -108,14 +127,18 @@
                 Margin="5,5,5,5"
                 >
             </TextBlock>
-           
+
 
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="2"
               x:Name="kozep"
                >
-            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+
             <Button
                 x:Name="btn_mehet"
                 Content="MEHET A JÁTÉK!" 
@@ -124,22 +147,22 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontFamily="OCR A Std" Width="448" Height="34" Click="Mehet"
-                >
-
-            </Button>
+                />
         </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1">
             <Button
-                x:Name="btn_bezárás"
+                x:Name="btn_iksz"
                 Content="❌"
                 FontSize="10"
                 Foreground="Red" Click="Iksz"
                 >
-                
+
             </Button>
-            
+
         </Grid>
+        <TextBlock x:Name="tb_proba" Grid.Column="1" HorizontalAlignment="Left" Margin="6,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Text="Próbálkozások száma: 0"/>
 
     </Grid>
 </Window>
+

@@ -1,15 +1,6 @@
-﻿using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xaml.Permissions;
 using System.Windows.Threading;
 
 namespace memoriajatek_vd
@@ -92,7 +83,7 @@ namespace memoriajatek_vd
 
         List<string> kevert = new List<string>();
 
-        List<int> segéd = new List<int>() {2, 4, 6, 8, 10, 12, 14, 16};
+        List<int> segéd = new List<int>() { 2, 4, 6, 8, 10, 12, 14, 16 };
 
         int maxIndex;
 
@@ -100,20 +91,30 @@ namespace memoriajatek_vd
         int ketto;
         int negy;
         Button v1Gomb;
+        int probalkozasok = 0;
+        int talalt = 0;
+        int kockak = 0;
+        SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(255, (byte)235, (byte)84, (byte)97));
 
         public MainWindow()
         {
             InitializeComponent();
-             ketto = rnd.Next(1, 8);
-             negy = rnd.Next(1, 5);
-
+            ketto = rnd.Next(1, 8);
+            negy = rnd.Next(1, 5);
+            tb_proba.Visibility = Visibility.Hidden;
+            btn_iksz.Visibility = Visibility.Hidden;
         }
 
         private void Mehet(object sender, RoutedEventArgs e)
         {
             if (lb_meretek.SelectedItem != null && lb_temak.SelectedItem != null)
             {
+                talalt = 0;
+                probalkozasok = 0;
+                tb_proba.Text = $"Próbálkozások száma: {probalkozasok}";
+                tb_proba.Visibility = Visibility.Visible;
                 btn_mehet.Visibility = Visibility.Hidden;
+                btn_iksz.Visibility = Visibility.Visible;
                 switch (((ListBoxItem)lb_temak.SelectedItem).Content.ToString())
                 {
                     case "Emoji":
@@ -127,7 +128,7 @@ namespace memoriajatek_vd
                         break;
                 }
 
-                
+
 
                 Gridvarazslo();
             }
@@ -142,7 +143,7 @@ namespace memoriajatek_vd
 
         private void Gridvarazslo()
         {
-            int kockak = 0;
+
             switch (((ListBoxItem)lb_meretek.SelectedItem).Content.ToString())
             {
                 case "2x2":
@@ -150,18 +151,19 @@ namespace memoriajatek_vd
                     maxIndex = segéd[ketto];
                     break;
                 case "4x4":
-                    maxIndex = segéd[negy];
                     kockak = 4;
+                    maxIndex = segéd[negy];
                     break;
                 case "6x6":
                     kockak = 6;
+                    maxIndex = 1;
                     break;
             }
 
 
 
 
-            KeveremKavarom(kockak);
+            KeveremKavarom();
             Grid palya = new Grid();
             for (int i = 0; i < kockak; i++)
             {
@@ -178,10 +180,16 @@ namespace memoriajatek_vd
                 for (int j = 0; j < kockak; j++)
                 {
                     Button gomb = new Button();
+                    gomb.Style = (Style)FindResource("SajatGomb");
                     gomb.HorizontalAlignment = HorizontalAlignment.Stretch;
                     gomb.VerticalAlignment = VerticalAlignment.Stretch;
-                    gomb.Content = kevert[i * kockak + j];
-                   // gomb.Foreground = Brushes.Transparent;
+                    TextBlock szoveg = new TextBlock();
+                    szoveg.Text = kevert[i * kockak + j];
+                    szoveg.TextWrapping = TextWrapping.Wrap;
+                    szoveg.TextAlignment = TextAlignment.Center;
+                    gomb.Content = szoveg;
+                    //gomb.Content = kevert[i * kockak + j];
+                    gomb.Foreground = Brushes.Transparent;
                     gomb.Background = Brushes.LightGray;
                     gomb.Margin = new Thickness(5);
                     Grid.SetRow(gomb, i);
@@ -209,30 +217,56 @@ namespace memoriajatek_vd
             Button gomb = (Button)sender;
             gomb.Foreground = Brushes.Black;
             gomb.Refresh();
-            if (nyomva == 2)
+            if (v1Gomb != gomb)
             {
-                string v1 = v1Gomb.Content.ToString();
-                string v2 = gomb.Content.ToString();
-                if (!Ellenorzo(v1, v2))
+                if (nyomva == 2)
                 {
-                    Thread.Sleep(1000);
-                    //gomb.Foreground = Brushes.Transparent;
-                    //v1Gomb.Foreground = Brushes.Transparent;
+                    probalkozasok++;
+                    tb_proba.Text = $"Próbálkozások száma: {probalkozasok}";
+                    string v1 = ((TextBlock)v1Gomb.Content).Text.ToString();
+                    string v2 = ((TextBlock)gomb.Content).Text.ToString();
+                    if (!Ellenorzo(v1, v2)) //Ha nem párok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    {
+                        gomb.Background = brush;
+                        v1Gomb.Background = brush;
+                        gomb.Refresh();
+                        v1Gomb.Refresh();
+                        Thread.Sleep(1000);
+                        gomb.Background = Brushes.LightGray;
+                        v1Gomb.Background = Brushes.LightGray;
+                        gomb.Foreground = Brushes.Transparent;
+                        v1Gomb.Foreground = Brushes.Transparent;
+                        v1Gomb = null;
+                    }
+                    else //Ha párok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    {
+                        talalt++;
+                        
+                        gomb.Background = Brushes.LightGreen;
+                        v1Gomb.Background = Brushes.LightGreen;
+                        gomb.IsEnabled = false;
+                        v1Gomb.IsEnabled = false;
+                        if (talalt == kockak * kockak / 2)
+                        {
+                            MessageBox.Show($"Ügyes voltál, megtaláltad az összes párt {probalkozasok} próbálkozásból!");
+                            vege();
+                        }
+                        
+                    }
+                    nyomva = 1;
                 }
-                
-                nyomva = 1;
-            }
-            else
-            {
-                v1Gomb = gomb;
-                nyomva++;
+                else
+                {
+                    v1Gomb = gomb;
+                    nyomva++;
+                }
             }
         }
 
 
 
 
-        private void KeveremKavarom(int kockak)
+        private void KeveremKavarom()
         {
             List<string> keverendo = new List<string>();
             for (int i = 0; i < kockak * kockak / 2; i++)
@@ -259,11 +293,11 @@ namespace memoriajatek_vd
                         return true;
                     }
                 }
-                else if (v1 == par.Kartya2) 
+                else if (v1 == par.Kartya2)
                 {
                     if (v2 == par.Kartya1)
                     {
-                       return true;
+                        return true;
                     }
                 }
             }
@@ -272,7 +306,17 @@ namespace memoriajatek_vd
 
         private void Iksz(object sender, RoutedEventArgs e)
         {
-            
+            vege();
+        }
+
+        private void vege()
+        {
+            kozep.Children.RemoveAt(1);
+            tb_proba.Visibility = Visibility.Hidden;
+            btn_mehet.Visibility = Visibility.Visible;
+            btn_iksz.Visibility = Visibility.Hidden;
+            lb_meretek.SelectedItem = null;
+            lb_temak.SelectedItem = null;
         }
     }
 
